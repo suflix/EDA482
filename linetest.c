@@ -308,43 +308,45 @@ int draw_line(PLINE l) {
 	x1 = l[i].endpoint.x;
 	y1 = l[i].endpoint.y;
 
+	// bresenhams algoritm
 	if(abs(y1 - y0) > abs(x1 - x0)) {
 	    steep = 1;
 	} else
 	    steep = 0;
-    }
-    if(steep == 1) {
-	temp = x0;
-	x0 = y0;
-	y0 = temp;
-    }
-    if(x0 > x1) {
-	temp = x0;
-	x0 = x1;
-	x1 = temp;
-	temp = y0;
-	y0 = y1;
-	y1 = temp;
-    }
-    deltax = x1 - x0;
-    deltay = abs(y1, y0);
-    error = 0;
-    y = y0;
 
-    if(y0 < y1) {
-	ystep = 1;
-    } else
-	ystep = -1;
-    for(int x = x0; x <= x1; x++) {
 	if(steep == 1) {
-	    pixel(y, x, 1);
-	} else
-	    pixel(x, y, 1);
+	    temp = x0;
+	    x0 = y0;
+	    y0 = temp;
+	}
+	if(x0 > x1) {
+	    temp = x0;
+	    x0 = x1;
+	    x1 = temp;
+	    temp = y0;
+	    y0 = y1;
+	    y1 = temp;
+	}
+	deltax = x1 - x0;
+	deltay = abs(y1, y0);
+	error = 0;
+	y = y0;
 
-	error = error = error + deltay;
-	if(2 * error >= deltax) {
-	    y = y + ystep;
-	    error = error - deltax;
+	if(y0 < y1) {
+	    ystep = 1;
+	} else
+	    ystep = -1;
+	for(int x = x0; x <= x1; x++) {
+	    if(steep == 1) {
+		pixel(y, x, 1);
+	    } else
+		pixel(x, y, 1);
+
+	    error = error = error + deltay;
+	    if(2 * error >= deltax) {
+		y = y + ystep;
+		error = error - deltax;
+	    }
 	}
     }
 }
