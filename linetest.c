@@ -45,7 +45,7 @@ typedef unsigned char uint8_t;
 typedef struct tPoint {
     int x;
     int y;
-} POINT;
+} POINT, *PPOINT;
 
 typedef struct line {
     POINT startpoint;
@@ -303,10 +303,10 @@ int draw_line(PLINE l) {
     int deltax, deltay;
     int x0, y0, x1, y1;
     for(int i = 0; i <= sizeof(l); i++) {
-	x0 = l[i].startpoint.x;
-	y0 = l[i].startpoint.y;
-	x1 = l[i].endpoint.x;
-	y1 = l[i].endpoint.y;
+	x0 = l->startpoint.x;
+	y0 = l->startpoint.y;
+	x1 = l->endpoint.x;
+	y1 = l->endpoint.y;
 
 	// bresenhams algoritm
 	if(abs(y1 - y0) > abs(x1 - x0)) {
@@ -318,6 +318,9 @@ int draw_line(PLINE l) {
 	    temp = x0;
 	    x0 = y0;
 	    y0 = temp;
+	    temp = x1;			// nya				
+	    x1 = y1;            // nya
+	    y1 = temp;          // nya
 	}
 	if(x0 > x1) {
 	    temp = x0;
@@ -328,7 +331,7 @@ int draw_line(PLINE l) {
 	    y1 = temp;
 	}
 	deltax = x1 - x0;
-	deltay = abs(y1, y0);
+	deltay = abs(y1 - y0);			// ändrad från y1, y0
 	error = 0;
 	y = y0;
 
@@ -342,7 +345,7 @@ int draw_line(PLINE l) {
 	    } else
 		pixel(x, y, 1);
 
-	    error = error = error + deltay;
+	    error = error + deltay;		//ändrad från error = error = error + deltay
 	    if(2 * error >= deltax) {
 		y = y + ystep;
 		error = error - deltax;
@@ -365,7 +368,7 @@ void main(void) {
     while(1) {
 	for(int i = 0; i < sizeof(lines) / sizeof(LINE); i++) {
 	    draw_line(&lines[i]);
-	    delay_milli(500);
+	    	    delay_milli(500);
 	}
 	graphic_clear_screen();
     }
